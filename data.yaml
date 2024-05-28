@@ -1,0 +1,10 @@
+train: D:/digital_human/yoga_poses/train
+val: D:/digital_human/yoga_poses/valid
+nc: 5 # Number of classes (yoga poses)
+names: [
+  'adho mukha svanasana', 
+  'adho mukha vriksasana', 
+  'agnistambhasana', 
+  'ananda balasana', 
+  'anantasana'
+]

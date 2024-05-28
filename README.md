@@ -3,7 +3,7 @@ Play Mingchao with actions and voice.
 ## Author's saying
 It is a good idea. More importantly, it is great to make the idea work.
 
-## Pose to action
+## Pose2action
 | Key | Pose |
 | :----:| :----: | 
 | A(left) | 单元格 |
@@ -30,6 +30,18 @@ It is a good idea. More importantly, it is great to make the idea work.
 11. 普通攻击：打拳
 12. E技能：两手掌合并为中空三角形
 13. R大招：基纽特战队队长登场姿势
+14. 空格：跳跃
+
+## Technical Planning
+1. Use yolov8 to detect and classify human poses.
+   ```
+   # command line to 
+   yolo pose predict model=D:/digital_human/MingchaoPlayer/models/yolo_models/yolov8n-pose.pt source='https://ultralytics.com/images/bus.jpg'
+   ```
+2. Use OP or PyAutoGUI to operate mouse and keyboard.
+3. Use Whisper to convert the player's real-time audio into text.
+4. Text splitting and phrases mapping to commands. 
+5. CNN做分类，全连接层就可以做分类，也可同时产出特征数据
 
 ## References
 1. https://github.com/CMU-Perceptual-Computing-Lab/openpose
@@ -38,3 +50,4 @@ It is a good idea. More importantly, it is great to make the idea work.
 4. https://learn.microsoft.com/zh-cn/windows/ai/windows-ml/tutorials/pytorch-train-model
 5. https://github.com/mmakos/HPC
 6. https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker/python?hl=zh-cn
+7. ASR System(Whisper): https://blog.csdn.net/lsb2002/article/details/131056566
