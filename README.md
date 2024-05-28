@@ -38,7 +38,10 @@ It is a good idea. More importantly, it is great to make the idea work.
    # command line to 
    yolo pose predict model=D:/digital_human/MingchaoPlayer/models/yolo_models/yolov8n-pose.pt source='https://ultralytics.com/images/bus.jpg'
    ```
-2. Use OP or PyAutoGUI to operate mouse and keyboard.
+   动作区别越大，识别准确率越高；闪避可以用双臂交叉挡住脸。
+   识别不准的动作有：跳跃、向左平移、向右平移
+
+2. Use Damo, OP or PyAutoGUI to operate mouse and keyboard.
 3. Use Whisper to convert the player's real-time audio into text.
 4. Text splitting and phrases mapping to commands. 
 
