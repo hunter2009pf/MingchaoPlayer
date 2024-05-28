@@ -41,7 +41,6 @@ It is a good idea. More importantly, it is great to make the idea work.
 2. Use OP or PyAutoGUI to operate mouse and keyboard.
 3. Use Whisper to convert the player's real-time audio into text.
 4. Text splitting and phrases mapping to commands. 
-5. CNN做分类，全连接层就可以做分类，也可同时产出特征数据
 
 ## References
 1. https://github.com/CMU-Perceptual-Computing-Lab/openpose
