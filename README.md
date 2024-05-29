@@ -45,6 +45,13 @@ It is a good idea. More importantly, it is great to make the idea work.
 3. Use Whisper to convert the player's real-time audio into text.
 4. Text splitting and phrases mapping to commands. 
 
+## Implementation Detail
+1. yolov8分类器
+   ffmpeg进行视频切帧，结果是一帧帧的图片
+   ```
+   ffmpeg -i VID20240528093613.mp4 -f image2 ./source/output_%03d.png
+   ```
+
 ## References
 1. https://github.com/CMU-Perceptual-Computing-Lab/openpose
 2. https://www.cnblogs.com/yuyingblogs/p/16177798.html
