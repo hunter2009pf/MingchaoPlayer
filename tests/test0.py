@@ -18,10 +18,10 @@ labels = [
     "R技能",
 ]
 
-if __name__=="__main__":
+if __name__ == "__main__":
     model = YOLO("D:/digital_human/yolo_test_20240528/trained_models/best.pt")
-    
-    directory = 'D:/digital_human/yolo_test_20240528/images_for_eval'
+
+    directory = "D:/digital_human/yolo_test_20240528/images_for_eval"
 
     # 使用os.walk()遍历目录
     for root, dirs, files in os.walk(directory):
@@ -41,7 +41,7 @@ if __name__=="__main__":
                     max_prob = numpy_array[i]
                     max_idx = i
             print(f"文件{file}的类型是：{labels[max_idx]}，置信度是{max_prob}")
-    
+
     # results = model("D:/digital_human/yolo_test_20240528/jack_dataset/test/attack/output_3654.png", conf=0.7)
     # print(results[0].probs.data)
 
