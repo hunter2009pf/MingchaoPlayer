@@ -1,7 +1,16 @@
+import multiprocessing
 from ultralytics import YOLO
 
-if __name__=="__main__":
-    model = YOLO("D:/digital_human/MingchaoPlayer/models/yolo_models/yolov8n-cls.pt")  # load a pretrained model (recommended for training)
-    results = model.train(data="D:/digital_human/yoga_poses", epochs=100, imgsz=640)
-    print(results)
-    
+from camera.ip_webcam import connect_camera
+from classifiers.yolov8_classifier import classify_pose
+
+
+if __name__ == "__main__":
+    queue = multiprocessing.Queue()
+    # 创建子进程
+    process = multiprocessing.Process(target=classify_pose, args=(queue,))
+    process.start()
+    connect_camera(queue)
+    # 等待子进程执行完毕
+    process.join()
+    queue.close()

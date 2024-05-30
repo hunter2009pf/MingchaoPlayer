@@ -1,4 +1,6 @@
+import datetime
 import os
+import torch
 from ultralytics import YOLO
 
 # labels = [
@@ -19,10 +21,18 @@ from ultralytics import YOLO
 # ]
 
 if __name__ == "__main__":
+    is_available = torch.cuda.is_available()
+    print(f"CUDA is {'' if is_available else 'not'} available.")
     # model = YOLO("D:/digital_human/yolo_test_20240528/trained_models/best.pt")
-    model = YOLO("D:/digital_human/MingchaoPlayer/models/yolo_models/bestm_cls_v2.pt")
+    model = YOLO("E:/python_projects/MingchaoPlayer/models/yolo_models/bestm_cls_v2.pt")
+    device = torch.device("cuda")
+    model.to(device)
+    # directory = "D:/digital_human/yolo_test_20240528/images_for_eval"
+    directory = "E:/mingchao_data/images_for_eval"
 
-    directory = "D:/digital_human/yolo_test_20240528/images_for_eval"
+    # 打印起始时间
+    date = datetime.datetime.now()
+    print("Start time:", date.strftime("%Y-%m-%d %H:%M:%S"))
 
     # 使用os.walk()遍历目录
     for root, dirs, files in os.walk(directory):
@@ -34,14 +44,19 @@ if __name__ == "__main__":
             results = model(filepath, conf=0.7)
             # print(results[0].probs.data)
             # Now convert to NumPy array
-            numpy_array = results[0].probs.data.numpy()
+            numpy_array = results[0].probs.data.cpu().numpy()
             max_prob = numpy_array[0]
             max_idx = 0
             for i in range(1, 14):
                 if numpy_array[i] > max_prob:
                     max_prob = numpy_array[i]
                     max_idx = i
-            print(f"文件{file}的类型是：{results[0].names[max_idx]}，置信度是{max_prob}")
+            print(
+                f"文件{file}的类型是：{results[0].names[max_idx]}，置信度是{max_prob}"
+            )
+
+    date = datetime.datetime.now()
+    print("End time:", date.strftime("%Y-%m-%d %H:%M:%S"))
 
     # results = model("D:/digital_human/yolo_test_20240528/jack_dataset/test/attack/output_3654.png", conf=0.7)
     # print(results[0].probs.data)
