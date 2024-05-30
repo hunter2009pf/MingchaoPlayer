@@ -4,3 +4,4 @@ openai-whisper
 faster-whisper==1.0.2
 PyAudio==0.2.14
 opencv-python
+mediapipe==0.10.14

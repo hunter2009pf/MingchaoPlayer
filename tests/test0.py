@@ -1,25 +1,26 @@
 import os
 from ultralytics import YOLO
 
-labels = [
-    "攻击",
-    "后退",
-    "闪避",
-    "向左平移",
-    "向右平移",
-    "前进",
-    "跳跃",
-    "E技能",
-    "跑步",
-    "快速左转",
-    "缓慢左转",
-    "快速右转",
-    "缓慢右转",
-    "R技能",
-]
+# labels = [
+#     "攻击",
+#     "后退",
+#     "闪避",
+#     "向左平移",
+#     "向右平移",
+#     "前进",
+#     "跳跃",
+#     "E技能",
+#     "跑步",
+#     "快速左转",
+#     "缓慢左转",
+#     "快速右转",
+#     "缓慢右转",
+#     "R技能",
+# ]
 
 if __name__ == "__main__":
-    model = YOLO("D:/digital_human/yolo_test_20240528/trained_models/best.pt")
+    # model = YOLO("D:/digital_human/yolo_test_20240528/trained_models/best.pt")
+    model = YOLO("D:/digital_human/MingchaoPlayer/models/yolo_models/bestm_cls_v2.pt")
 
     directory = "D:/digital_human/yolo_test_20240528/images_for_eval"
 
@@ -40,7 +41,7 @@ if __name__ == "__main__":
                 if numpy_array[i] > max_prob:
                     max_prob = numpy_array[i]
                     max_idx = i
-            print(f"文件{file}的类型是：{labels[max_idx]}，置信度是{max_prob}")
+            print(f"文件{file}的类型是：{results[0].names[max_idx]}，置信度是{max_prob}")
 
     # results = model("D:/digital_human/yolo_test_20240528/jack_dataset/test/attack/output_3654.png", conf=0.7)
     # print(results[0].probs.data)
