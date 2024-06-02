@@ -24,7 +24,7 @@ def connect_camera(queue):
 
             # 将图片信息放入队列
             if cnt % POSE_CLASSIFICATION_FRAME_INTERVAL == 0:
-                queue.put(image_np)
+                queue.put([image_np, cnt * 33])
 
             # 显示图像
             cv2.imshow("camera", image_np)
