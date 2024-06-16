@@ -151,7 +151,8 @@ def test_similarity():
 if __name__ == "__main__":
     model_path = "E:/python_projects/MingchaoPlayer/models/mediapipe_models/pose_landmarker_heavy.task"
     # 获取当前工作目录
-    dir_path = "E:/mingchao_data/images_for_eval"
+    # dir_path = "E:/mingchao_data/images_for_eval"
+    dir_path = "E:/mingchao_data/forward_left_right"
 
     # 列出dir_path下的所有文件和文件夹
     for filename in os.listdir(dir_path):

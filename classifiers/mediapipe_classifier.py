@@ -1,4 +1,5 @@
 import multiprocessing
+import threading
 import time
 import mediapipe as mp
 from mediapipe.tasks import python
@@ -7,9 +8,12 @@ import websocket
 import rel
 
 from config.custom_config import HUMAN_POSE_STANDARD_EMBEDDINGS
+from constants.constants import *
 
 
 PoseLandmarkerResult = mp.tasks.vision.PoseLandmarkerResult
+
+ws = None
 
 
 def on_message(ws, message):
@@ -17,7 +21,7 @@ def on_message(ws, message):
 
 
 def on_error(ws, error):
-    print(error)
+    print("websocket error: {}".format(error))
 
 
 def on_close(ws, close_status_code, close_msg):
@@ -30,7 +34,7 @@ def on_open(ws):
 
 
 def init_websocket():
-    global queue1
+    global ws
     websocket.enableTrace(True)
     ws = websocket.WebSocketApp(
         "ws://127.0.0.1:8888/ws/",
@@ -41,32 +45,8 @@ def init_websocket():
     )
 
     ws.run_forever(
-        reconnect=5
+        reconnect=5,
     )  # Set dispatcher to automatic reconnection, 5 second reconnect delay if connection closed unexpectedly
-
-
-ws = None
-
-
-def init_websocket_v2():
-    global ws
-    ws = websocket.create_connection("ws://127.0.0.1:8888/ws/", timeout=3600)
-    print("Sending 'Hello, World'...")
-    ws.send("Hello, World")
-    time.sleep(1)
-    print("sending 1")
-    ws.send("1")
-    time.sleep(1)
-    print("sending 234")
-    ws.send("234")
-    time.sleep(1)
-    ws.send("567")
-    time.sleep(1)
-    ws.send("hahaha")
-    ws.close()
-
-
-ws = None
 
 
 # Create a pose landmarker instance with the live stream mode:
@@ -123,15 +103,30 @@ def print_result(
             current_action = key
 
     print(f"当前动作: {current_action}, 欧几里得距离平方数: {min_L2_distance}")
-    if min_L2_distance < 1.5:
+    if min_L2_distance < L2_DISTANCE_THRESHOLD:
         print("尝试发送动作")
         # 动作正确，发送正确信号
+        ws.send(current_action)
+    elif min_L2_distance < L2_DISTANCE_CHANGE_DIRECTION and (
+        current_action == "turn_on_left" or current_action == "turn_on_right"
+    ):
+        print("向左或向右转换视角")
         ws.send(current_action)
 
 
 def classify_pose_v2(queue):
-    global ws
-    ws = websocket.create_connection("ws://127.0.0.1:8888/ws/", timeout=360000)
+    # global ws
+    # ws = websocket.create_connection("ws://127.0.0.1:8888/ws/", timeout=360000)
+    print("start websocket")
+
+    # 创建一个线程
+    thread = threading.Thread(target=init_websocket)
+
+    # 启动线程
+    thread.start()
+
+    # 主线程继续执行
+    print("主线程继续执行其他任务")
 
     model_path = "E:/python_projects/MingchaoPlayer/models/mediapipe_models/pose_landmarker_heavy.task"
     BaseOptions = mp.tasks.BaseOptions
@@ -159,3 +154,7 @@ def classify_pose_v2(queue):
             # The pose landmarker must be created with the live stream mode.
             print(f"timestamp ms: {frame_timestamp_ms}")
             landmarker.detect_async(mp_image, frame_timestamp_ms)
+
+    # 等待子线程完成
+    thread.join()
+    print("子线程已结束")

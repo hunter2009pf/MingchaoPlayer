@@ -1,7 +1,7 @@
 import multiprocessing
 
 from camera.ip_webcam import connect_camera
-from classifiers.mediapipe_classifier import classify_pose_v2, init_websocket_v2
+from classifiers.mediapipe_classifier import classify_pose_v2
 
 # def classify_humnan_pose_by_yolov8():
 #     queue = multiprocessing.Queue()
@@ -18,6 +18,7 @@ def classify_humnan_pose_by_mediapipe():
     print("arrive here")
     queue = multiprocessing.Queue()
     # 创建子进程
+    print("start new process")
     process = multiprocessing.Process(target=classify_pose_v2, args=(queue,))
     process.start()
     connect_camera(queue)

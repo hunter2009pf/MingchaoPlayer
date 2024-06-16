@@ -28,6 +28,7 @@ def connect_camera(queue):
 
             # 显示图像
             cv2.imshow("camera", image_np)
+            cv2.resizeWindow("camera", 720, 640)
 
             # 按'q'退出循环
             if cv2.waitKey(1) & 0xFF == ord("q"):
